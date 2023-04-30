@@ -1,6 +1,5 @@
 package com.example.ctsusermanagement.config;
 
-
 import com.example.ctsusermanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
