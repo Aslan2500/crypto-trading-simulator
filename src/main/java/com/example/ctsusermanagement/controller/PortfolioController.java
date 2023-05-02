@@ -23,9 +23,9 @@ public class PortfolioController {
 
     @SecurityRequirement(name = "TOKEN")
     @Operation(summary = "Deposit")
-    @PostMapping("/{userId}/deposit")
-    public ResponseEntity<String> deposit(@PathVariable Long userId, BigDecimal amount) {
-        portfolioService.deposit(userId, amount);
+    @PostMapping("/deposit")
+    public ResponseEntity<String> deposit(BigDecimal amount) {
+        portfolioService.deposit(amount);
         return ResponseEntity.ok("Deposit successfully accepted");
     }
 }
