@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-
 import static java.lang.String.format;
 
 @RequiredArgsConstructor
@@ -37,8 +35,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserAlreadyExistsException("User already registered");
         }
         var portfolio = Portfolio.builder()
-                .cashBalance(BigDecimal.valueOf(0))
-                .totalValue(BigDecimal.valueOf(0))
+                .cashBalance((double) 0)
+                .totalValue((double) 0)
                 .build();
         var user = User.builder()
                 .name(request.getName())

@@ -17,8 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -41,8 +39,8 @@ public class Position {
     private String ticket;
 
     @Column(name = "quantity", nullable = false)
-    private BigDecimal quantity;
+    private Double quantity;
 
     @Column(name = "average_price", nullable = false)
-    private BigDecimal averagePrice;
+    private Double averagePrice;
 }
