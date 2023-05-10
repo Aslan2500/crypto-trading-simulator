@@ -37,14 +37,13 @@ public class PortfolioServiceImpl implements PortfolioService {
         if (positionList.isEmpty()) {
             return portfolio.getTotalValue();
         }
-        Double totalValue = Double.valueOf(0);
+        Double totalValue = portfolio.getCashBalance();
         for (Position p : positionList) {
             String ticket = p.getTicket();
             Double cryptoPrice = getCryptoPrice(ticket);
             Double quantity = p.getQuantity();
             totalValue += cryptoPrice * quantity;
         }
-        totalValue += portfolio.getCashBalance();
         portfolio.setTotalValue(totalValue);
         portfolioRepository.save(portfolio);
         return totalValue;

@@ -53,7 +53,6 @@ public class TradeServiceImpl implements TradeService {
         Double purchaseQuantity = amountToSpend / price;
         addPurchase(purchaseQuantity, price, position);
         portfolio.setCashBalance(portfolio.getCashBalance() - amountToSpend);
-//        portfolioRepository.save(portfolio);
         positionRepository.save(position);
     }
 
@@ -75,7 +74,6 @@ public class TradeServiceImpl implements TradeService {
         Double moneyToReturn = cryptoPrice * amountCryptoToSell;
         position.setQuantity(position.getQuantity() - amountCryptoToSell);
         portfolio.setCashBalance(portfolio.getCashBalance() + moneyToReturn);
-//        portfolioRepository.save(portfolio);
         positionRepository.save(position);
     }
 
