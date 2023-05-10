@@ -1,6 +1,7 @@
 package com.example.ctsusermanagement.controller;
 
 import com.example.ctsusermanagement.service.TradeService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,18 @@ public class TradeController {
     private final TradeService tradeService;
 
     @SecurityRequirement(name = "TOKEN")
+    @Operation(summary = "Buy crypto")
     @PostMapping("/{ticket}/buy")
     public ResponseEntity<String> buy(@PathVariable("ticket") String ticket, Double amountToSpend) {
         tradeService.buy(ticket, amountToSpend);
+        return ResponseEntity.ok("Operation succeeded");
+    }
+
+    @SecurityRequirement(name = "TOKEN")
+    @Operation(summary = "Sell crypto")
+    @PostMapping("/{ticket}/sell")
+    public ResponseEntity<String> sell(@PathVariable("ticket") String ticket, Double amountCryptoToSell) {
+        tradeService.sell(ticket, amountCryptoToSell);
         return ResponseEntity.ok("response");
     }
 }

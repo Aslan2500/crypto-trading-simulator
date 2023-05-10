@@ -1,11 +1,15 @@
 package com.example.ctsusermanagement.service;
 
 import com.example.ctsusermanagement.exception.CryptoPriceFetchException;
+import com.example.ctsusermanagement.exception.NotEnoughCryptoException;
 import com.example.ctsusermanagement.exception.NotEnoughMoneyException;
+import com.example.ctsusermanagement.exception.PositionNotFoundException;
 import com.example.ctsusermanagement.model.Position;
+import com.example.ctsusermanagement.repository.PortfolioRepository;
 import com.example.ctsusermanagement.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,10 +20,12 @@ import java.util.Optional;
 public class TradeServiceImpl implements TradeService {
 
     private final PositionRepository positionRepository;
+    private final PortfolioRepository portfolioRepository;
     private final CryptoPriceService cryptoPriceService;
     private final UserService userService;
 
     @Override
+    @Transactional
     public void buy(String ticket, Double amountToSpend) {
         var user = userService.getCurrentUser();
         var portfolio = user.getPortfolio();
@@ -47,6 +53,29 @@ public class TradeServiceImpl implements TradeService {
         Double purchaseQuantity = amountToSpend / price;
         addPurchase(purchaseQuantity, price, position);
         portfolio.setCashBalance(portfolio.getCashBalance() - amountToSpend);
+//        portfolioRepository.save(portfolio);
+        positionRepository.save(position);
+    }
+
+    @Override
+    @Transactional
+    public void sell(String ticket, Double amountCryptoToSell) {
+        var user = userService.getCurrentUser();
+        var portfolio = user.getPortfolio();
+        List<Position> positions = portfolio.getPositions();
+        Position position = checkIfUserAlreadyHasThisPosition(ticket, positions);
+        if (position == null) {
+            throw new PositionNotFoundException("Position not found");
+        }
+        Double quantity = position.getQuantity();
+        if (quantity < amountCryptoToSell) {
+            throw new NotEnoughCryptoException("You don't have enough crypto");
+        }
+        Double cryptoPrice = getCryptoPrice(ticket);
+        Double moneyToReturn = cryptoPrice * amountCryptoToSell;
+        position.setQuantity(position.getQuantity() - amountCryptoToSell);
+        portfolio.setCashBalance(portfolio.getCashBalance() + moneyToReturn);
+//        portfolioRepository.save(portfolio);
         positionRepository.save(position);
     }
 

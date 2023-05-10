@@ -38,5 +38,5 @@ public class Portfolio {
     private Double cashBalance;
 
     @Column(name = "total_value")
-    private Double totalValue;
+    private Double totalValue; //TODO: Сделать это поле обновляемым
 }

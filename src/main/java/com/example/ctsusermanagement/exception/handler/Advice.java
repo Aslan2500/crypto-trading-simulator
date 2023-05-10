@@ -1,7 +1,9 @@
 package com.example.ctsusermanagement.exception.handler;
 
 import com.example.ctsusermanagement.exception.CryptoPriceFetchException;
+import com.example.ctsusermanagement.exception.NotEnoughCryptoException;
 import com.example.ctsusermanagement.exception.NotEnoughMoneyException;
+import com.example.ctsusermanagement.exception.PositionNotFoundException;
 import com.example.ctsusermanagement.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -42,6 +44,18 @@ public class Advice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     String handleCryptoPriceFetchException(CryptoPriceFetchException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String handleNotEnoughCryptoException(NotEnoughCryptoException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String handlePositionNotFoundException(PositionNotFoundException e) {
         return e.getMessage();
     }
 }
